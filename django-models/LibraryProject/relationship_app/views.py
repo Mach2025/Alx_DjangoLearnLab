@@ -19,7 +19,7 @@
 # def list_books(request):
 #     books = Book.objects.all()
 #     return render(request, 'list_books.html', {'books': books})
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.detail import DetailView
 from .models import Book, Library
 
@@ -33,3 +33,19 @@ class LibraryDetailView(DetailView):
     model = Library
     template_name = 'relationship_app/library_detail.html'
     context_object_name = 'library'
+
+    from django.shortcuts import redirect, render
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login as auth_login
+
+def register(request):
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            auth_login(request, user)       # log them in immediately
+            return redirect('list_books')   # or wherever you like
+    else:
+        form = UserCreationForm()
+    return render(request, 'relationship_app/register.html', {'form': form})
+
