@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 
+
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -76,7 +77,7 @@ WSGI_APPLICATION = 'LibraryProject.wsgi.application'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-       'default': {
+    'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'relationship_project',
         'USER': 'root',
@@ -86,6 +87,7 @@ DATABASES = {
     }
 }
 
+    
 
 
 
