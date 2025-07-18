@@ -80,7 +80,7 @@ def member_view(request):
     return render(request, 'relationship_app/member_view.html')
 from django.contrib.auth.decorators import permission_required
 from django.shortcuts import get_object_or_404
-from .forms import BookForm  # Make sure this form exists
+from .form import BookForm  # Make sure this form exists
 
 @permission_required('relationship_app.can_add_book', raise_exception=True)
 def add_book(request):
