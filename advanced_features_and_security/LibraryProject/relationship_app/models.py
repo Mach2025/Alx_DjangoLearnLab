@@ -5,11 +5,10 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 from django.contrib.auth.models import AbstractUser
 from django .conf import settings
-from relationship_app.models import Library
-Library.objects.create(name="Main Library", location="Nairobi")
 
 
-class UserManager():
+
+class CustomUserManager():
     def create_user(self, username, email, password=None, **extra_fields):
         if not email:
             raise ValueError("The Email field is required")
@@ -24,11 +23,11 @@ class UserManager():
         extra_fields.setdefault('is_superuser', True)
         return self.create_user(username, email, password, **extra_fields)
     
-class User(AbstractUser):
+class CustomUser(AbstractUser):
     date_of_birth = models.DateField(null= True, blank=True)
     profile_photo = models.ImageField(upload_to='profile_photos/', null=True, blank=True)
 
-object = UserManager()
+object = CustomUserManager()
 
 def __str__(self):
     return self.username
@@ -67,15 +66,15 @@ class UserProfile(models.Model):
         ('Librarian', 'Librarian'),
         ('Member', 'Member'),
     )
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    # user = models.OneToOneField(User, on_delete=models.CASCADE)
     role = models.CharField(max_length=10, choices=ROLE_CHOICES)
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
 
 
-    def __str__(self):
-        return f"{self.user.username} - {self.role}"
+    # def __str__(self):
+        # return f"{self.user.username} - {self.role}"
 
-@receiver(post_save, sender=User)
+# @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)
