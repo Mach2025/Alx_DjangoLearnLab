@@ -1,29 +1,41 @@
 from django.shortcuts import render
 from .models import Book
+from django.shortcuts import redirect, render
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth import login as auth_login
+from django.views.generic.detail import DetailView
+from .models import Library
+from django.shortcuts import render
+from .models import Book
+from django.shortcuts import render, redirect
+from django.views.generic.detail import DetailView
+from .models import Book
+from .models import UserProfile
+from .models import Library
+from django.contrib.auth.decorators import login_required, user_passes_test
+from django.contrib.auth.decorators import permission_required
+from django.shortcuts import get_object_or_404
+from .form import BookForm
+from .models import Product
+from .forms import ProductForm
+
+
 
 def list_books(request):
     books = Book.objects.select_related('author').all()
     return render(request, 'list_books.html', {'books': books})
 
-from django.views.generic.detail import DetailView
-from .models import Library
 
 class LibraryDetailView(DetailView):
     model = Library
     template_name = 'library_detail.html'
     context_object_name = 'library'
 
-from django.shortcuts import render
-from .models import Book
 
 def list_books(request):
     books = Book.objects.all()
     return render(request, 'list_books.html', {'books': books})
-from django.shortcuts import render, redirect
-from django.views.generic.detail import DetailView
-from .models import Book
-from .models import UserProfile
-from .models import Library
+
 # Function-based view
 def list_books(request):
     books = Book.objects.all()
@@ -35,9 +47,6 @@ class LibraryDetailView(DetailView):
     template_name = 'relationship_app/library_detail.html'
     context_object_name = 'library'
 
-    from django.shortcuts import redirect, render
-from django.contrib.auth.forms import UserCreationForm
-from django.contrib.auth import login as auth_login
 
 def register(request):
     if request.method == 'POST':
@@ -50,9 +59,6 @@ def register(request):
         form = UserCreationForm()
     return render(request, 'relationship_app/register.html', {'form': form})
 
-from django.contrib.auth.decorators import login_required, user_passes_test
-from django.shortcuts import render
-from .models import UserProfile
 
 # Individual role check functions
 def is_admin(user):
@@ -79,9 +85,7 @@ def librarian_view(request):
 @user_passes_test(is_member)
 def member_view(request):
     return render(request, 'relationship_app/member_view.html')
-from django.contrib.auth.decorators import permission_required
-from django.shortcuts import get_object_or_404
-from .form import BookForm  
+
 
 @permission_required('relationship_app.can_add_book', raise_exception=True)
 def add_book(request):
@@ -113,3 +117,36 @@ def delete_book(request, book_id):
         book.delete()
         return redirect('list_books')
     return render(request, 'relationship_app/book_confirm_delete.html', {'book': book})
+
+@permission_required('inventory.can_view', raise_exception=True)
+def product_list(request):
+    products = Product.objects.all()
+    return render(request, 'inventory/product_list.html', {'products': products})
+
+@permission_required('inventory.can_create', raise_exception=True)
+def product_create(request):
+    if request.method == 'POST':
+        form = ProductForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('product_list')
+    else:
+        form = ProductForm()
+    return render(request, 'inventory/product_form.html', {'form': form})
+
+@permission_required('inventory.can_edit', raise_exception=True)
+def product_edit(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    form = ProductForm(request.POST or None, instance=product)
+    if form.is_valid():
+        form.save()
+        return redirect('product_list')
+    return render(request, 'inventory/product_form.html', {'form': form})
+
+@permission_required('inventory.can_delete', raise_exception=True)
+def product_delete(request, pk):
+    product = get_object_or_404(Product, pk=pk)
+    if request.method == 'POST':
+        product.delete()
+        return redirect('product_list')
+    return render(request, 'inventory/product_confirm_delete.html', {'product': product})

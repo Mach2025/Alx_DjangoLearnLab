@@ -18,10 +18,10 @@ class CustomUserManager(BaseUserManager):
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, username, email, password=None, **extra_fields):
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_superuser', True)
-        return self.create_user(username, email, password, **extra_fields)
+    def create_superuser(self, username, email, password=None):
+        ('is_staff', True)
+        ('is_superuser', True)
+        return self.create_user(username, email, password)
     
 class CustomUser(AbstractUser):
     date_of_birth = models.DateField(null= True, blank=True)
@@ -31,6 +31,19 @@ object = CustomUserManager()
 
 def __str__(self):
     return self.username
+
+class Product(models.Model):
+    name = models.CharField(max_length=100)
+    stock = models.PositiveIntegerField()
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    class Meta:
+        permissions = [
+            ("can_view", "Can view product"),
+            ("can_create", "Can create product"),
+            ("can_edit", "Can edit product"),
+            ("can_delete", "Can delete product"),
+        ]
 
 class Author(models.Model):
     name = models.CharField(max_length=100)
