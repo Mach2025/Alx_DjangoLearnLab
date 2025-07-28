@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles'
-    
+
 ]
 
 MIDDLEWARE = [
@@ -133,4 +133,4 @@ STATICFILES_DIRS = [BASE_DIR / "static"]
 # Redirect after successful login or logout
 LOGIN_REDIRECT_URL = '/books/'        # or any page you want after login
 LOGOUT_REDIRECT_URL = '/login/'       # where to go after logout
-AUTH_USER_MODEL = 'relationship_app.CustomUser'
+AUTH_USER_MODEL = 'bookshelf.CustomUser'
