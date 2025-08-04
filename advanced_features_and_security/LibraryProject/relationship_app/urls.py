@@ -3,6 +3,9 @@ from .views import list_books, LibraryDetailView
 from django.contrib.auth import views as auth_views
 from .views import list_books, LibraryDetailView, register
 from . import views
+from django.shortcuts import redirect
+from relationship_app.views import home
+
 urlpatterns = [
     path('books/', list_books, name='list_books'),
     path('library/<int:pk>/', LibraryDetailView.as_view(), name='library_detail'),
@@ -19,6 +22,9 @@ urlpatterns = [
     
     path("add_book/", views.add_book, name="debug_add_book"),
     path("edit_book/", views.edit_book, name="debug_edit_book"),
+    path('', lambda request: redirect('list_books'), name='home'),
+    path('', home, name='home'),
+
 
 
     # path('books/add/', views.add_book, name='add_book'),

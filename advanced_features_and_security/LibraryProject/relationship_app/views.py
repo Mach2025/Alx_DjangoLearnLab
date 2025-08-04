@@ -17,7 +17,11 @@ from django.contrib.auth.decorators import permission_required
 from django.shortcuts import get_object_or_404
 from .form import BookForm
 from .models import Product
-from .forms import ProductForm
+from django.shortcuts import render
+
+def home(request):
+    return render(request, 'home.html')
+
 
 
 
