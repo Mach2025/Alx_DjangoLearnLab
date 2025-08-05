@@ -1,6 +1,7 @@
 from rest_framework import serializers
-from .models import Author, Book
+from .models import Author
 import datetime
+from .models import Book
 
 # The BookSerializer handles serialization of Book instances.
 # It includes all fields of the Book model
