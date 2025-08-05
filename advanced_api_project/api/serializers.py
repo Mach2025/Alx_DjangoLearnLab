@@ -8,15 +8,17 @@ from .models import Book
 class BookSerializer(serializers.ModelSerializer):
     class Meta:
         model = Book
-        fields = '__all__'# This will include all fields from the Book model
+        fields = ['id', 'title', 'publication_year', 'author']
 
 
  # Custom validation to ensure publication_year is not in the future
-    def validate_publication_year(self, value):
+    def validate(self, data):
         current_year = datetime.date.today().year
-        if value > current_year:
-            raise serializers.ValidationError("Publication year cannot be in the future.")
-        return value
+        if data['publication_year'] > current_year:
+            raise serializers.ValidationError(
+                {"publication_year": "Publication year cannot be in the future."}
+            )
+        return data
 
 
 class AuthorSerializer(serializers.ModelSerializer):
@@ -26,6 +28,6 @@ class AuthorSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Author
-        fields = [ 'name', 'books']
+        fields = ['id', 'name', 'books']
 # This serializer demonstrates how Django REST Framework handles one-to-many relationships.
     # The 'books' field includes all books linked to an author.
