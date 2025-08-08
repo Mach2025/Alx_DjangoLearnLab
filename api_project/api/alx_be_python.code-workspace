@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"path": "../../../../Alx_Tasks/alx_be_python"
+		},
+		{
+			"name": "Website",
+			"path": "../../../../Javascript/Website"
+		},
+		{
+			"name": "Intro_to_DB",
+			"path": "../../../../Alx_Tasks/Intro_to_DB"
+		},
+		{
+			"name": "GitHubCloneProject",
+			"path": "../../../../Alx_Tasks/GitHubCloneProject"
+		}
+	],
+	"settings": {
+		"liveServer.settings.multiRootWorkspaceName": "Website"
+	}
+}
