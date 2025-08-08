@@ -11,11 +11,7 @@ class BookListView(generics.ListAPIView):
     filter_backends =[DjangoFilterBackend, filters.SearchFilter, filters.OrderingFilter]
     
     filterset_fields = ['title', 'author', 'publication_year']
-    
-    # Searching (case-insensitive partial match by default)
     search_fields = ['title', 'author']
-    
-    # Ordering
     ordering_fields = ['title', 'publication_year']
     ordering = ['title']  # Default ordering
 
