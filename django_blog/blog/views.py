@@ -53,7 +53,7 @@ class CommentCreateView(CreateView):
     template_name = 'blog/comment_post_detail.html'
 
     def form_valid(self, form):
-        # Automatically associate the comment with the correct post and author
+        # Set the post and author for the comment
         post = Post.objects.get(pk=self.kwargs['pk'])
         form.instance.post = post
         form.instance.author = self.request.user
@@ -94,7 +94,7 @@ def register(request):
 
 @login_required
 def profile(request):
-    # Handle POST request to update user and profile information
+   
     if request.method == 'POST':
         user = request.user
         
@@ -122,17 +122,17 @@ def profile(request):
 
 class PostListView(ListView):
     model = Post
-    template_name = 'blog/post_list.html'
+    template_name = 'post_list.html'
     context_object_name = 'posts'
 
 class PostDetailView(DetailView):
     model = Post
-    template_name = 'blog/post_detail.html'
+    template_name = 'post_detail.html'
     context_object_name = 'post'
 
 class PostCreateView(LoginRequiredMixin, CreateView):
     model = Post
-    template_name = 'blog/post_form.html'
+    template_name = 'post_form.html'
     fields = ['title', 'content']
 
     def form_valid(self, form):
@@ -142,16 +142,16 @@ class PostCreateView(LoginRequiredMixin, CreateView):
 class PostUpdateView(LoginRequiredMixin, UserPassesTestMixin, UpdateView):
     model = Post
     fields = ['title', 'content']  # Fields to update
-    template_name = 'blog/post_form.html'  # Path to the template
-    success_url = '/'  # Redirect after successful update
-
+    template_name = 'post_form.html'  # Path to the template
+    success_url = '/'  
+    
     def test_func(self):
         post = self.get_object()
         return post.author == self.request.user
 
 class PostDeleteView(LoginRequiredMixin, UserPassesTestMixin, DeleteView):
     model = Post
-    template_name = 'blog/post_confirm_delete.html'
+    template_name = 'post_confirm_delete.html'
     success_url = reverse_lazy('post_list')
 
     def test_func(self):
