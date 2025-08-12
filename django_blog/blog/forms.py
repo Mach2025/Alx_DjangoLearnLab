@@ -3,7 +3,7 @@ from django.contrib.auth.models import User
 from django import forms
 from .models import Post
 from .models import Comment
-
+from taggit.forms import TagWidget
 
 
 class CustomUserCreationForm(UserCreationForm):
@@ -18,7 +18,7 @@ class PostForm(forms.ModelForm):
         model = Post
         fields = ['title', 'content', 'tags']
         widgets = {
-           
+            'tags': TagWidget(),
         }
 
 class CommentForm(forms.ModelForm):
@@ -26,6 +26,4 @@ class CommentForm(forms.ModelForm):
         model = Comment
         fields = ['content']
         widgets = {
-            'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),
-
-        }
+            'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 3}),}
