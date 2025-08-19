@@ -13,7 +13,7 @@ class RegisterView(generics.CreateAPIView):
     def create(self, request, *args, **kwargs):
         response = super().create(request, *args, **kwargs)
         user = CustomUser.objects.get(id=response.data["id"])
-        token, created = Token.objects.get_or_create(user=user)
+        token, _ = Token.objects.get_or_create(user=user)
         response.data["token"] = token.key
         return response
 
@@ -27,7 +27,7 @@ class LoginView(generics.GenericAPIView):
         password = request.data.get("password")
         user = authenticate(username=username, password=password)
         if user:
-            token, created = Token.objects.get_or_create(user=user)
+            token, _ = Token.objects.get_or_create(user=user)
             return Response({"user": UserSerializer(user).data, "token": token.key})
         return Response({"error": "Invalid credentials"}, status=status.HTTP_400_BAD_REQUEST)
 
