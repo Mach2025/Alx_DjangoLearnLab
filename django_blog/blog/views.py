@@ -98,10 +98,10 @@ def profile(request):
     if request.method == 'POST':
         user = request.user
         
-        # Update user fields like email
+        # Update user fields : email
         user.email = request.POST['email']
         
-        # Update profile fields like bio and profile picture
+        # Update profile fields: bio and profile picture
         if 'bio' in request.POST:
             user.profile.bio = request.POST['bio']
         
@@ -112,14 +112,14 @@ def profile(request):
         user.save()
         user.profile.save()
 
-        # Redirect to the same profile page after update
+        # Redirect to the same profile page.
         return redirect('profile')
 
     # Handle GET request to render profile details
     return render(request, 'registration/profile.html', {'user': request.user})
 
 
-
+#CRUD
 class PostListView(ListView):
     model = Post
     template_name = 'blog/post_list.html'
